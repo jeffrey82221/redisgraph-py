@@ -1,6 +1,6 @@
 from .node import Node
 from .edge import Edge
-
+from .subgraph import Subgraph
 
 class Path:
     def __init__(self, nodes, edges):
@@ -68,3 +68,14 @@ class Path:
         res += "(" + str(node_id) + ")"
         res += ">"
         return res
+
+    def __hash__(self):
+        value = 0
+        for n in self.nodes():
+            value ^= hash(n)
+        for e in self.edges():
+            value ^= hash(e)
+        return value
+
+    def __or__(self, rhs):
+        return Subgraph(set(self.nodes()) | set(rhs.nodes()), set(self.edges()) | set(rhs.edges()))

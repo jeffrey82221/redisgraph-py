@@ -1,5 +1,5 @@
 from .util import quote_string
-
+from .subgraph import Subgraph
 
 class Node:
     """
@@ -27,6 +27,12 @@ class Node:
         else:
             raise AssertionError("label should be either None, string or a list of strings")
         self.properties = properties or {}
+
+    def nodes(self):
+        return [self]
+    
+    def edges(self):
+        return []
 
     def toString(self):
         res = ""
@@ -67,3 +73,9 @@ class Node:
             return False
 
         return True
+    
+    def __hash__(self):
+        return hash(str(self)) ^ self.id
+
+    def __or__(self, rhs):
+        return Subgraph(set(self.nodes()) | set(rhs.nodes()), set(self.edges()) | set(rhs.edges()))

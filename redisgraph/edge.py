@@ -1,7 +1,6 @@
-from redisgraph import Node
-
 from .util import quote_string
-
+from .subgraph import Subgraph
+from .node import Node
 
 class Edge:
     """
@@ -23,10 +22,12 @@ class Edge:
         self.src_node = src_node
         self.dest_node = dest_node
 
-    @property
     def nodes(self):
         return frozenset([self.src_node, self.dest_node])
-        
+    
+    def edges(self):
+        return [self]
+
     def toString(self):
         res = ""
         if self.properties:
@@ -84,3 +85,9 @@ class Edge:
             return False
 
         return True
+
+    def __hash__(self):
+        return hash(str(self)) ^ self.id ^ hash(self.src_node) ^ hash(self.dest_node)
+
+    def __or__(self, rhs):
+        return Subgraph(set(self.nodes()) | set(rhs.nodes()), set(self.edges()) | set(rhs.edges()))
