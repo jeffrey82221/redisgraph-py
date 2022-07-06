@@ -23,6 +23,10 @@ class Edge:
         self.src_node = src_node
         self.dest_node = dest_node
 
+    @property
+    def nodes(self):
+        return frozenset([self.src_node, self.dest_node])
+        
     def toString(self):
         res = ""
         if self.properties:
