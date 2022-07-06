@@ -26,6 +26,22 @@ class Subgraph:
     def edges(self):
         return self._edges
 
+    def nodes_count(self):
+        return len(self._nodes)
+
+    def edge_count(self):
+        return len(self._edges)
+
+    def labels(self):
+        """ Return the set of all node labels in this subgraph.
+        """
+        return frozenset(chain.from_iterable(node.labels for node in self._nodes))
+
+    def relations(self):
+        """ Return the set of all edge relations in this subgraph.
+        """
+        return frozenset(e.relation for e in self._edges)
+
     def __str__(self):
         res = ''
         if self._nodes:

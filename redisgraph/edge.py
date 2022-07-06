@@ -87,7 +87,11 @@ class Edge:
         return True
 
     def __hash__(self):
-        return hash(str(self)) ^ self.id ^ hash(self.src_node) ^ hash(self.dest_node)
-
+        value = hash(str(self)) ^ hash(self.src_node) ^ hash(self.dest_node)
+        if self.id:
+            return value ^ self.id
+        else:
+            return value
+            
     def __or__(self, rhs):
         return Subgraph(set(self.nodes()) | set(rhs.nodes()), set(self.edges()) | set(rhs.edges()))

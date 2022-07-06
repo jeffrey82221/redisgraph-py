@@ -75,7 +75,10 @@ class Node:
         return True
     
     def __hash__(self):
-        return hash(str(self)) ^ self.id
+        if self.id:
+            return hash(str(self)) ^ self.id
+        else:
+            return hash(str(self))
 
     def __or__(self, rhs):
         return Subgraph(set(self.nodes()) | set(rhs.nodes()), set(self.edges()) | set(rhs.edges()))
